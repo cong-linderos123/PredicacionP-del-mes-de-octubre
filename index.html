@@ -1,0 +1,846 @@
+﻿
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#b9d9e9">
+<title>Programa de Predicación Pública</title>
+
+<style>
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #18212b;
+  font-size: 16px;
+  --neon: #102a91;
+  --card: rgba(244,251,255,.88);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg,#f2f4f6,#dce6ec,#a9cedf);
+  background-attachment: fixed;
+}
+.container { max-width: 1180px; margin: auto; padding: 22px; }
+.toolbar {
+  display:flex; justify-content:flex-end; align-items:center;
+  gap:8px; flex-wrap:wrap; margin-bottom:14px;
+}
+button {
+  border:2px solid var(--neon); border-radius:9px; padding:10px 15px;
+  background:linear-gradient(135deg,#70d1f7,#37afe9);
+  color:#10264b; font-weight:bold; cursor:pointer;
+  box-shadow:0 0 8px #1739b45c;
+  transition:transform .18s,box-shadow .18s;
+}
+button:hover { transform:translateY(-2px); box-shadow:0 0 14px #183ab58c; }
+button:disabled { opacity:.65; cursor:wait; transform:none; }
+h1 {
+  margin:0; padding:20px 12px; text-align:center; color:#07539a;
+  font-size:clamp(1.2rem,3vw,1.8rem); font-weight:900;
+  text-transform:uppercase;
+  background:linear-gradient(135deg,#fafdff,#c9eaff);
+  border:3px solid var(--neon); border-radius:15px;
+  box-shadow:0 0 12px #1436a34d,0 8px 24px #25334218;
+}
+h2 { color:#12345b; }
+.main-nav {
+  display:flex; justify-content:center; flex-wrap:wrap;
+  gap:8px; margin:18px 0;
+}
+.nav-button { min-width:115px; padding:11px 14px; font-size:.92rem; }
+.nav-button.active {
+  background:linear-gradient(135deg,#102a91,#267de4);
+  color:white; border-color:#071b67; box-shadow:0 0 16px #1739b480;
+}
+.page-section { display:none; }
+.page-section.active { display:block; }
+.today {
+  margin:20px 0 28px; border:3px solid var(--neon); border-radius:16px;
+  overflow:hidden; background:var(--card);
+  box-shadow:0 0 13px #1739b452,0 12px 28px #25334220;
+}
+.today-label {
+  text-align:center; padding:12px;
+  background:linear-gradient(90deg,#d7f3ff,#a7e0ff,#d7f3ff);
+  color:#103c78; font-weight:900; letter-spacing:.08em;
+}
+.today h2 {
+  margin:0; padding:14px; text-align:center;
+  background:linear-gradient(90deg,#8cdbfa,#49b9ee,#8cdbfa);
+  color:#12345b; border-block:2px solid var(--neon);
+  text-transform:uppercase; font-size:1.15rem;
+}
+.toolbar select {
+  max-width:260px; border:2px solid var(--neon); border-radius:8px;
+  padding:9px 10px; background:#f5fbff; color:#18212b; font:inherit;
+}
+.voice-control { display:flex; align-items:center; gap:7px; font-weight:700; }
+.font-controls {
+  display:flex; align-items:center; gap:8px; min-height:40px;
+  max-width:100%; padding:5px 10px;
+  background:linear-gradient(135deg,#e4f5ff,#b8e5fa);
+  border:2px solid var(--neon); border-radius:12px;
+}
+.font-label { flex:0 0 auto; color:#12345b; font-size:12px; font-weight:900; }
+.font-label-big { font-size:21px; }
+#fontSlider {
+  display:block; flex:0 0 7cm; width:7cm; min-width:7cm;
+  max-width:none; height:18px; padding:0; margin:0;
+  accent-color:#1739db; cursor:ew-resize; touch-action:pan-y;
+}
+#fontValue {
+  flex:0 0 auto; min-width:48px; color:#12345b;
+  font-size:12px; font-weight:900; text-align:center;
+}
+.schedule { width:100%; border-collapse:collapse; table-layout:fixed; background:#f4fbff; }
+.schedule th,.schedule td {
+  border:1px solid #25468c; padding:7px 8px; text-align:center;
+  font-size:clamp(.76rem,1.6vw,.98rem); line-height:1.25; font-weight:700;
+}
+.schedule td { color:#142a40; overflow-wrap:anywhere; }
+.schedule th { background:#72cef3; color:#12345b; text-transform:uppercase; }
+.schedule .time-row td { background:#83d8f8; color:#12345b; text-transform:uppercase; }
+.schedule .peach td { background:#c6eaff; }
+.schedule .sky td { background:#a9e0fa; }
+.schedule .gray td { background:#d2edfa; }
+.schedule .light td { background:#e4f4fc; }
+.schedule .no-preaching { color:#c01832; font-weight:900; }
+.day-heading {
+  margin:0 0 14px; padding:13px 16px;
+  background:linear-gradient(90deg,#8ddafa,#b8e9fc); color:#12345b;
+  border:3px solid var(--neon); border-radius:11px;
+  text-transform:uppercase; letter-spacing:.05em;
+}
+.day-grid {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr)); gap:18px;
+}
+.day-card {
+  min-width:0; overflow:hidden; background:var(--card);
+  border:3px solid var(--neon); border-radius:14px;
+  box-shadow:0 0 12px #1739b452,0 8px 22px #25334220;
+}
+.day-card h3 {
+  margin:0; padding:13px 15px;
+  background:linear-gradient(90deg,#b7eaff,#6acbf4,#b7eaff);
+  color:#12345b; border-bottom:2px solid var(--neon);
+  text-align:center; text-transform:uppercase; font-size:1rem;
+}
+#listenButton { display:block; margin:16px auto 18px; padding:12px 20px; }
+.missing-info { padding:12px; text-align:center; font-weight:bold; }
+
+.vote-panel,.results-panel {
+  padding:20px; border:3px solid var(--neon); border-radius:20px;
+  background:linear-gradient(135deg,rgba(245,252,255,.82),rgba(173,222,247,.68),rgba(222,241,252,.82));
+  box-shadow:0 0 18px #1739b45c,0 12px 30px #25334220;
+  backdrop-filter:blur(10px);
+}
+.vote-intro { text-align:center; margin:12px 0 22px; }
+.vote-intro p { line-height:1.6; }
+.vote-panel h3,.results-panel h3 { color:#12345b; text-align:center; }
+.people-grid {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(135px,1fr));
+  gap:8px; margin:18px 0;
+}
+.person-button {
+  min-height:48px; padding:8px 6px; border-radius:10px;
+  background:linear-gradient(135deg,rgba(255,255,255,.93),rgba(153,220,248,.87));
+  border:2px solid #1537a9; color:#12345b;
+  font-size:.78rem; line-height:1.2; overflow-wrap:anywhere;
+  box-shadow:0 0 7px #1739b42b;
+}
+.person-button.selected {
+  background:linear-gradient(135deg,#102a91,#248bd8);
+  color:white; border-color:#071b67;
+}
+.person-status { display:block; margin-top:4px; font-size:.68rem; font-weight:normal; }
+.vote-editor {
+  display:none; margin-top:24px; padding:18px;
+  border:2px solid #1739b4; border-radius:16px;
+  background:rgba(255,255,255,.72);
+}
+.vote-editor.visible { display:block; }
+.vote-editor h3 { margin-top:0; }
+.vote-description { text-align:center; line-height:1.5; }
+.days-grid {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(125px,1fr));
+  gap:10px; margin:20px 0;
+}
+.day-option {
+  display:flex; align-items:center; gap:10px; min-height:50px;
+  padding:10px; border:2px solid #2351ad; border-radius:12px;
+  background:linear-gradient(135deg,#fafdff,#c9eaff);
+  color:#12345b; font-weight:bold; cursor:pointer;
+}
+.day-option:has(input:checked) {
+  border-color:#102a91; background:linear-gradient(135deg,#8edaff,#60b9ef);
+}
+.day-option input { width:19px; height:19px; accent-color:#102a91; }
+.vote-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin-top:18px; }
+.save-vote { background:linear-gradient(135deg,#102a91,#267de4); color:white; border-color:#071b67; }
+.cancel-vote { background:#f3f8ff; }
+.vote-message {
+  display:none; margin-top:16px; padding:12px; text-align:center;
+  font-weight:bold; color:#12345b; border:1px solid #1a57a8;
+  border-radius:10px; background:rgba(255,255,255,.8);
+  overflow-wrap:anywhere;
+}
+.vote-message.visible { display:block; }
+.vote-note { margin-top:18px; padding:12px; border-radius:10px; background:rgba(255,255,255,.6); font-size:.88rem; line-height:1.5; }
+.connection-status { text-align:center; font-size:.88rem; margin:10px 0; font-weight:bold; overflow-wrap:anywhere; }
+.status-ok { color:#087333; }
+.status-wait { color:#945900; }
+.status-error { color:#b00020; }
+
+.results-scroll {
+  width:100%; overflow:auto; border:2px solid var(--neon);
+  border-radius:12px; background:rgba(255,255,255,.65);
+}
+.results-table {
+  border-collapse:collapse; table-layout:fixed;
+  width:max-content; min-width:100%;
+}
+.results-table th,.results-table td {
+  border:1px solid #25468c; text-align:center;
+  padding:9px 7px; min-width:48px; font-size:.78rem;
+}
+.results-table thead th {
+  background:linear-gradient(135deg,#102a91,#267de4); color:white;
+}
+.results-table .name-heading {
+  min-width:125px; max-width:125px; width:125px;
+  white-space:normal; overflow-wrap:anywhere;
+}
+.results-table .day-heading-cell {
+  position:sticky; left:0; z-index:2;
+  min-width:105px; width:105px; text-align:left;
+  background:#b8e9fc; color:#12345b; font-weight:900;
+}
+.results-table thead .name-heading:first-child {
+  position:sticky; left:0; z-index:4;
+  background:#102a91; color:white;
+}
+.results-table td.yes { background:#b7f2cf; color:#075b2b; font-weight:900; }
+.results-table td.no { background:#f5f8fc; color:#9aa5b1; }
+.results-table td.waiting { background:#fff0bd; color:#785900; }
+.results-legend { font-size:.85rem; line-height:1.6; margin-top:12px; }
+
+body.dark {
+  background:linear-gradient(135deg,#18232d,#203541,#294958) fixed;
+  color:#f3f8ff;
+}
+.dark h2 { color:#e9f8ff; }
+.dark .today,.dark .day-card,.dark h1 {
+  background:#253b49; color:#f3f8ff; border-color:#294fff;
+  box-shadow:0 0 13px #294fff72;
+}
+.dark h1 { background:linear-gradient(135deg,#253b49,#31566b); color:#effaff; }
+.dark .day-heading { background:#25485b; color:#e9f8ff; border-color:#294fff; }
+.dark .today-label { background:#31566b; color:#effaff; }
+.dark .today h2,.dark .day-card h3 { background:linear-gradient(90deg,#397fa2,#55b9e6,#397fa2); color:white; }
+.dark .toolbar select { background:#253b49; color:#f3f8ff; border-color:#5474ff; }
+.dark .font-controls { background:#294958; border-color:#5474ff; }
+.dark .font-label,.dark #fontValue { color:white; }
+.dark .schedule td { color:#10263b; }
+.dark .schedule .time-row td { color:#10294a; }
+.dark .vote-panel,.dark .results-panel {
+  background:linear-gradient(135deg,rgba(30,51,65,.94),rgba(36,75,96,.88));
+  border-color:#5474ff;
+}
+.dark .vote-panel h3,.dark .results-panel h3,.dark .vote-intro h2,.dark .vote-intro p { color:#effaff; }
+.dark .person-button { background:linear-gradient(135deg,#294958,#376c87); color:white; border-color:#5474ff; }
+.dark .person-button.selected { background:linear-gradient(135deg,#1738a5,#2769c9); }
+.dark .vote-editor { background:rgba(27,48,61,.94); border-color:#5474ff; }
+.dark .vote-editor h3,.dark .vote-description { color:#effaff; }
+.dark .day-option { background:linear-gradient(135deg,#294958,#376c87); color:white; border-color:#5474ff; }
+.dark .day-option:has(input:checked) { background:linear-gradient(135deg,#1738a5,#2769c9); }
+.dark .vote-note,.dark .vote-message { color:#effaff; background:rgba(35,60,76,.92); border-color:#5474ff; }
+.dark .results-scroll { background:#263d4a; }
+.dark .results-table .day-heading-cell { background:#31566b; color:white; }
+.dark .results-table td.no { background:#344b58; color:#d3e1e9; }
+.dark .results-table td.waiting { background:#6a5826; color:#fff0bd; }
+.dark .results-table td.yes { background:#245e43; color:#d0ffe2; }
+
+@media(max-width:600px) {
+  .container { padding:12px; }
+  .toolbar { justify-content:center; }
+  .toolbar select { width:100%; max-width:none; }
+  .font-controls { justify-content:flex-start; width:100%; overflow-x:auto; }
+  #fontSlider { width:7cm; min-width:7cm; max-width:none; }
+  .day-grid { grid-template-columns:1fr; }
+  .schedule th,.schedule td { padding:6px 4px; font-size:.74rem; }
+  .today { margin:14px 0 22px; }
+  .vote-panel,.results-panel { padding:12px; }
+  .people-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:7px; }
+  .person-button { font-size:.74rem; padding:8px 5px; }
+  .vote-editor { padding:12px; }
+  .days-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .day-option { padding:9px 7px; font-size:.88rem; }
+  .results-table th,.results-table td { padding:8px 5px; font-size:.72rem; }
+}
+</style>
+</head>
+
+<body>
+<main class="container">
+
+  <div class="toolbar">
+    <div class="font-controls" aria-label="Tamaño de letra">
+      <span class="font-label">A</span>
+      <input type="range" id="fontSlider" min="8" max="96" step="0.1" value="16" aria-label="Ajustar tamaño de letra">
+      <span class="font-label font-label-big">A</span>
+      <output id="fontValue">100%</output>
+    </div>
+    <label class="voice-control">Voz
+      <select id="voiceSelect"><option value="auto">Automática</option></select>
+    </label>
+    <button id="themeButton" type="button">Modo oscuro</button>
+  </div>
+
+  <h1>Predicación Pública Congregación Linderos</h1>
+
+  <nav class="main-nav" aria-label="Navegación principal">
+    <button class="nav-button active" data-page="programPage" type="button">📅 Programa</button>
+    <button class="nav-button" data-page="votePage" type="button">🗳️ Votación</button>
+    <button class="nav-button" data-page="resultsPage" type="button">📊 Resultados</button>
+  </nav>
+
+  <section id="programPage" class="page-section active">
+    <section class="today" aria-live="polite">
+      <div class="today-label">PROGRAMA DE HOY</div>
+      <div id="todayContent"></div>
+    </section>
+    <h2 class="day-heading">Programa semanal</h2>
+    <section class="day-grid" id="weekGrid"></section>
+  </section>
+
+  <section id="votePage" class="page-section">
+    <div class="vote-intro">
+      <h2>🗳️ Votación de días disponibles</h2>
+      <p>Selecciona tu nombre y marca los días de la semana en los que puedes salir.</p>
+    </div>
+
+    <div class="vote-panel">
+      <h3>¿Quién va a votar?</h3>
+      <p style="text-align:center">Pulsa un nombre para abrir su votación.</p>
+      <div id="connectionVote" class="connection-status status-wait">Conectando con la base de datos...</div>
+      <div id="peopleGrid" class="people-grid"></div>
+
+      <div id="voteEditor" class="vote-editor">
+        <h3 id="selectedPersonTitle">Votación</h3>
+        <p class="vote-description">Marca todos los días en los que tienes disponibilidad.</p>
+        <div id="daysGrid" class="days-grid"></div>
+        <div class="vote-actions">
+          <button id="saveVoteButton" class="save-vote" type="button">💾 Guardar votación</button>
+          <button id="cancelVoteButton" class="cancel-vote" type="button">Volver a los nombres</button>
+        </div>
+        <div id="voteMessage" class="vote-message" role="status"></div>
+      </div>
+
+      <div class="vote-note">
+        Los votos se guardan en Firebase para que los resultados puedan actualizarse
+        en otros dispositivos. La votación no verifica por sí sola la identidad de
+        quien elige un nombre.
+      </div>
+    </div>
+  </section>
+
+  <section id="resultsPage" class="page-section">
+    <div class="vote-intro">
+      <h2>📊 Resultados de la votación</h2>
+      <p>Esta tabla se actualiza cuando se guardan nuevos votos.</p>
+    </div>
+    <div class="results-panel">
+      <h3>Disponibilidad semanal</h3>
+      <div id="connectionResults" class="connection-status status-wait">Conectando con Firebase...</div>
+      <div class="results-scroll">
+        <table class="results-table" id="resultsTable">
+          <tbody><tr><td>Cargando resultados...</td></tr></tbody>
+        </table>
+      </div>
+      <div class="results-legend">
+        <strong>✓ Disponible</strong> · El hermano o la hermana marcó ese día.<br>
+        <strong>— Sin marcar</strong> · Todavía no ha elegido ese día.<br>
+        Desliza la tabla horizontalmente para ver todos los nombres.
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+const programa = [
+  {date:'2026-10-26',day:'Lunes',items:[
+    ['10:00 a 12:00','Casa Hna Doris','Doris Salazar','Adriana Gonzalez','light']
+  ]},
+  {date:'2026-10-27',day:'Martes',items:[
+    ['07:30 a 09:30','Colegio Cardenal R. Silva H.','Betysabeht de Jachura','Yasmina de Condores','peach'],
+    ['','Colegio Tec. Don Bosco','Sin PP','Sin PP','peach'],
+    ['HERMANO/A','','','','header'],
+    ['','Departamentos lado A. Neghme','Mireya Pastén','Barbara Castro','gray'],
+    ['','Departamentos lado A. Lagos','Sin PP','Sin PP','gray'],
+    ['','Casa Hna Doris','Doris Salazar','Pabla de Cifuentes','light']
+  ]},
+  {date:'2026-10-28',day:'Miércoles',items:[
+    ['09:30 a 11:30','A. Neghme/Cancha Rayada','Ángel Medina','Angel Medina','sky'],
+    ['','A. Neghme/Cancha Rayada','Héctor Cárcamo','Nestor Usquiano','sky'],
+    ['','Casa Hna Doris','Doris Salazar','mery Ramirez','light']
+  ]},
+  {date:'2026-10-29',day:'Jueves',items:[
+    ['07:30 a 09:30','Colegio Cardenal R. Silva H.','Karen Fook','Antonia Cárcamo','peach'],
+    ['','Colegio Tec. Don Bosco','Sin PP','Sin PP','peach'],
+    ['09:30 a 11:30','Departamentos lado A. Neghme','Virginia Céspedes','Erika Castro','gray'],
+    ['','Departamentos lado A. Lagos','Sin PP','Sin PP','gray'],
+    ['','Casa Hna Doris','Doris Salazar','Ivone de Mamani','light']
+  ]},
+  {date:'2026-10-30',day:'Viernes',items:[
+    ['09:30 a 11:30','A. Neghme/Cancha Rayada','Mario Roco','Eleodoro Veas','sky'],
+    ['','A. Neghme/Cancha Rayada','Marina Cano','Ivette de Guerrero','sky'],
+    ['','Casa Hna Doris','Doris Salazar','Tomasa Ramos','light']
+  ]},
+  {date:'2026-10-31',day:'Sábado',items:[
+    ['08:00 a 10:00','Neghme/Robinson Rojas','Isabel Mamani','Rut de Cortez','sky'],
+    ['10:00 a 12:00','Cementerio Parque de la Paz','Fernanda de Manzano','Nicole de Piñones','peach'],
+    ['10:00 a 12:00','Plaza Mejillones/Linderos','Sin PP','Sin PP','sky']
+  ]}
+];
+
+const personas = [
+  'Doris Salazar','Adriana Gonzalez','Betysabeht de Jachura',
+  'Yasmina de Condores','Mireya Pastén','Barbara Castro',
+  'Pabla de Cifuentes','Ángel Medina','Angel Medina',
+  'Héctor Cárcamo','Nestor Usquiano','mery Ramirez','Karen Fook',
+  'Antonia Cárcamo','Virginia Céspedes','Erika Castro',
+  'Ivone de Mamani','Mario Roco','Eleodoro Veas','Marina Cano',
+  'Ivette de Guerrero','Tomasa Ramos','Isabel Mamani','Rut de Cortez',
+  'Fernanda de Manzano','Nicole de Piñones'
+];
+
+const personasUnicas = [...new Set(personas.map(nombre =>
+  nombre === 'Angel Medina' ? 'Ángel Medina' : nombre
+))];
+
+const dias = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+
+const fmtDate = iso => new Intl.DateTimeFormat('es-CL',{
+  day:'2-digit',month:'2-digit',year:'numeric',timeZone:'UTC'
+}).format(new Date(iso+'T12:00:00Z'));
+
+function fechaProgramaIso() {
+  const d = new Date();
+  if (d.getHours() >= 18) d.setDate(d.getDate()+1);
+  return [
+    d.getFullYear(),
+    String(d.getMonth()+1).padStart(2,'0'),
+    String(d.getDate()).padStart(2,'0')
+  ].join('-');
+}
+
+function nombreDiaDesdeISO(iso) {
+  return new Intl.DateTimeFormat('es-CL',{weekday:'long'}).format(new Date(iso+'T12:00:00'));
+}
+
+function renderRows(items) {
+  let filas='',horaActual='';
+  for (const item of items) {
+    const [hora,lugar,a,b,color]=item;
+    if (color==='header') {
+      filas += '<tr class="time-row"><td colspan="4">HERMANO/A</td></tr>';
+      continue;
+    }
+    if (hora) horaActual=hora;
+    filas += `<tr class="${color}">
+      <td>${hora || horaActual}</td><td>${lugar}</td>
+      <td class="${a==='Sin PP'?'no-preaching':''}">${a}</td>
+      <td class="${b==='Sin PP'?'no-preaching':''}">${b}</td>
+    </tr>`;
+  }
+  return filas;
+}
+
+function makeTable(day) {
+  return `<table class="schedule"><thead><tr>
+    <th>Horario</th><th>Lugar</th><th>Hermano/a</th><th>Hermano/a</th>
+    </tr></thead><tbody>${renderRows(day.items)}</tbody></table>`;
+}
+
+function renderPrograma() {
+  const esManana=new Date().getHours()>=18;
+  const fecha=fechaProgramaIso();
+  const d=programa.find(x=>x.date===fecha);
+  document.querySelector('.today-label').textContent=esManana?'PROGRAMA DE MAÑANA':'PROGRAMA DE HOY';
+  document.getElementById('todayContent').innerHTML=d
+    ? `<h2>${d.day} · ${fmtDate(d.date)}</h2>${makeTable(d)}`
+    : `<h2>${nombreDiaDesdeISO(fecha)} · ${fmtDate(fecha)}</h2>
+       <p class="missing-info">No hay información guardada para este día.</p>`;
+
+  document.getElementById('weekGrid').innerHTML=programa.map(day=>
+    `<article class="day-card"><h3>${day.day} · ${fmtDate(day.date)}</h3>${makeTable(day)}</article>`
+  ).join('');
+}
+renderPrograma();
+
+/* Navegación */
+const navButtons=document.querySelectorAll('.nav-button');
+const pages=document.querySelectorAll('.page-section');
+
+function mostrarPagina(id) {
+  pages.forEach(p=>p.classList.toggle('active',p.id===id));
+  navButtons.forEach(b=>b.classList.toggle('active',b.dataset.page===id));
+  if (id==='votePage') renderPersonas();
+  if (id==='resultsPage') renderResultados();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+navButtons.forEach(b=>b.addEventListener('click',()=>mostrarPagina(b.dataset.page)));
+
+/* Voces */
+async function actualizarSelectorVoces() {
+  if (!('speechSynthesis' in window)) return;
+  let voces=speechSynthesis.getVoices();
+  if (!voces.length) {
+    await new Promise(resolve=>{
+      speechSynthesis.addEventListener('voiceschanged',resolve,{once:true});
+      setTimeout(resolve,1200);
+    });
+    voces=speechSynthesis.getVoices();
+  }
+  const es=voces.filter(v=>v.lang.toLowerCase().startsWith('es'));
+  const selector=document.getElementById('voiceSelect');
+  const guardada=localStorage.getItem('vozPredicacion')||'auto';
+  selector.innerHTML='<option value="auto">Automática</option>'+
+    es.map((v,i)=>`<option value="${i}">${v.name} · ${v.lang}</option>`).join('');
+  selector.value=guardada==='auto'||es[Number(guardada)]?guardada:'auto';
+}
+if ('speechSynthesis' in window) {
+  actualizarSelectorVoces();
+  speechSynthesis.addEventListener('voiceschanged',actualizarSelectorVoces);
+}
+document.getElementById('voiceSelect').addEventListener('change',e=>
+  localStorage.setItem('vozPredicacion',e.target.value)
+);
+
+function hablar(texto) {
+  if (!('speechSynthesis' in window)) { alert(texto); return; }
+  speechSynthesis.cancel();
+  const es=speechSynthesis.getVoices().filter(v=>v.lang.toLowerCase().startsWith('es'));
+  const valor=document.getElementById('voiceSelect').value;
+  const voz=valor==='auto'?es[0]:es[Number(valor)];
+  const msg=new SpeechSynthesisUtterance(texto);
+  msg.lang=voz?voz.lang:'es-CL';
+  if (voz) msg.voice=voz;
+  msg.rate=.9; msg.pitch=1; msg.volume=1;
+  speechSynthesis.speak(msg);
+}
+
+function leerProgramaDeHoy() {
+  const esManana=new Date().getHours()>=18;
+  const fecha=fechaProgramaIso();
+  const d=programa.find(x=>x.date===fecha);
+  if (!d || !d.items?.length) {
+    hablar(`Atención. No hay información guardada para el programa de predicación de ${esManana?'mañana':'hoy'}.`);
+    return;
+  }
+  const detalle=d.items.filter(i=>i[4]!=='header').map(([hora,lugar,a,b])=>
+    a==='Sin PP'&&b==='Sin PP'
+      ? `${hora?hora+'. ':''}${lugar}. No hay predicación programada en este lugar.`
+      : `${hora?hora+'. ':''}${lugar}. Participan ${a} y ${b}.`
+  ).join(' ');
+  hablar(`Programa de predicación pública de ${esManana?'mañana':'hoy'}, ${d.day}, ${fmtDate(d.date)}. ${detalle}`);
+}
+const listen=document.createElement('button');
+listen.id='listenButton'; listen.type='button';
+listen.textContent='🔊 Escuchar programa';
+listen.addEventListener('click',leerProgramaDeHoy);
+document.querySelector('.today').appendChild(listen);
+
+/* Tema oscuro */
+document.getElementById('themeButton').addEventListener('click',e=>{
+  document.body.classList.toggle('dark');
+  const oscuro=document.body.classList.contains('dark');
+  localStorage.setItem('temaPredicacion',oscuro?'oscuro':'claro');
+  e.currentTarget.textContent=oscuro?'Modo claro':'Modo oscuro';
+});
+if (localStorage.getItem('temaPredicacion')==='oscuro') {
+  document.body.classList.add('dark');
+  document.getElementById('themeButton').textContent='Modo claro';
+}
+
+/* Tamaño de letra */
+const fontSlider=document.getElementById('fontSlider');
+const fontValue=document.getElementById('fontValue');
+function aplicarTamanoLetra() {
+  const n=Number(fontSlider.value);
+  document.documentElement.style.fontSize=n+'px';
+  fontValue.textContent=Math.round(n/16*100)+'%';
+  localStorage.setItem('tamanoLetraPredicacion',fontSlider.value);
+}
+fontSlider.value=Math.min(96,Math.max(8,Number(localStorage.getItem('tamanoLetraPredicacion'))||16));
+aplicarTamanoLetra();
+fontSlider.addEventListener('input',aplicarTamanoLetra);
+
+/* Firebase: base de datos compartida */
+let db=null;
+let firestore=null;
+let votosCompartidos={};
+let personaSeleccionada=null;
+let firebaseListo=false;
+let guardando=false;
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD_VkbEoLkyJ3mvvQpzlykjcDuI5E8GU",
+  authDomain: "programa-18857.firebaseapp.com",
+  projectId: "programa-18857",
+  storageBucket: "programa-18857.firebasestorage.app",
+  messagingSenderId: "767033650805",
+  appId: "1:767033650805:web:8cd54cb0669d0821bc123c",
+  measurementId: "G-8Z75S1TGVF"
+};
+
+function estadoConexion(texto,estado) {
+  ['connectionVote','connectionResults'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.textContent=texto;
+    el.className='connection-status '+estado;
+  });
+}
+
+(async function iniciarFirebase() {
+  try {
+    const appSDK=await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
+    const dbSDK=await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+
+    const app=appSDK.initializeApp(firebaseConfig);
+    db=dbSDK.getFirestore(app);
+    firestore=dbSDK;
+
+    dbSDK.onSnapshot(
+      dbSDK.collection(db,'votosPredicacion'),
+      snapshot=>{
+        votosCompartidos={};
+        snapshot.forEach(docSnap=>{
+          const dato=docSnap.data();
+          if (dato && typeof dato.nombre==='string' && Array.isArray(dato.dias)) {
+            votosCompartidos[dato.nombre]=dato.dias.filter(d=>dias.includes(d));
+          }
+        });
+        firebaseListo=true;
+        estadoConexion('✓ Conectado: los resultados se actualizan automáticamente.','status-ok');
+        renderPersonas();
+        renderResultados();
+        actualizarEditorDesdeDatosRemotos();
+      },
+      error=>{
+        console.error('Error leyendo Firebase:',error);
+        estadoConexion(
+          'Error al leer Firebase: '+(error.code||error.message||'error desconocido'),
+          'status-error'
+        );
+      }
+    );
+  } catch(error) {
+    console.error('No se pudo iniciar Firebase:',error);
+    estadoConexion(
+      'No se pudo iniciar Firebase: '+(error.code||error.message||'error desconocido'),
+      'status-error'
+    );
+  }
+})();
+
+function renderPersonas() {
+  const contenedor=document.getElementById('peopleGrid');
+  contenedor.innerHTML='';
+  personasUnicas.forEach(nombre=>{
+    const boton=document.createElement('button');
+    boton.type='button';
+    boton.className='person-button'+(personaSeleccionada===nombre?' selected':'');
+    const titulo=document.createElement('span');
+    titulo.textContent=nombre;
+    const estado=document.createElement('span');
+    estado.className='person-status';
+    estado.textContent=Object.prototype.hasOwnProperty.call(votosCompartidos,nombre)
+      ? '✓ Votación guardada'
+      : 'Tocar para votar';
+    boton.append(titulo,estado);
+    boton.addEventListener('click',()=>abrirVotacion(nombre));
+    contenedor.appendChild(boton);
+  });
+}
+
+function abrirVotacion(nombre) {
+  personaSeleccionada=nombre;
+  document.getElementById('selectedPersonTitle').textContent='Votación de '+nombre;
+  const seleccionados=votosCompartidos[nombre]||[];
+  const grid=document.getElementById('daysGrid');
+  grid.innerHTML='';
+  dias.forEach(dia=>{
+    const label=document.createElement('label');
+    label.className='day-option';
+    const check=document.createElement('input');
+    check.type='checkbox';
+    check.value=dia;
+    check.checked=seleccionados.includes(dia);
+    const span=document.createElement('span');
+    span.textContent=dia;
+    label.append(check,span);
+    grid.appendChild(label);
+  });
+  document.getElementById('voteEditor').classList.add('visible');
+  const msg=document.getElementById('voteMessage');
+  msg.classList.remove('visible');
+  msg.textContent='';
+  renderPersonas();
+  document.getElementById('voteEditor').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function actualizarEditorDesdeDatosRemotos() {
+  if (!personaSeleccionada || guardando) return;
+  const checks=document.querySelectorAll('#daysGrid input[type="checkbox"]');
+  const diasNuevos=votosCompartidos[personaSeleccionada]||[];
+  checks.forEach(check=>check.checked=diasNuevos.includes(check.value));
+}
+
+document.getElementById('saveVoteButton').addEventListener('click',async()=>{
+  if (!personaSeleccionada) {
+    mostrarMensaje('Primero selecciona un nombre.','error');
+    return;
+  }
+
+  if (!firebaseListo || !db || !firestore) {
+    mostrarMensaje(
+      'Firebase todavía no está conectado. Revisa el mensaje de conexión que aparece sobre la lista de nombres.',
+      'error'
+    );
+    return;
+  }
+
+  const seleccionados=Array.from(
+    document.querySelectorAll('#daysGrid input[type="checkbox"]:checked')
+  ).map(input=>input.value);
+
+  const nombre=personaSeleccionada;
+  const boton=document.getElementById('saveVoteButton');
+  boton.disabled=true;
+  boton.textContent='Guardando...';
+  guardando=true;
+
+  try {
+    const ref=firestore.doc(db,'votosPredicacion',nombre);
+    const guardarPromise = firestore.setDoc(ref, {
+  nombre: nombre,
+  dias: seleccionados,
+  actualizadoEn: firestore.serverTimestamp()
+});
+
+let temporizador;
+
+try {
+  await Promise.race([
+    guardarPromise,
+    new Promise((_, reject) => {
+      temporizador = setTimeout(() => {
+        const error = new Error(
+          'Firebase tardó demasiado en confirmar el guardado. Comprueba tu conexión.'
+        );
+        error.code = 'timeout';
+        reject(error);
+      }, 15000);
+    })
+  ]);
+
+  votosCompartidos[nombre] = seleccionados;
+  renderPersonas();
+  renderResultados();
+
+  mostrarMensaje(
+    '✓ Votación guardada correctamente.',
+    'ok'
+  );
+
+} finally {
+  clearTimeout(temporizador);
+}
+
+    votosCompartidos[nombre]=seleccionados;
+    renderPersonas();
+    renderResultados();
+
+    mostrarMensaje(
+      seleccionados.length
+        ? '✓ ¡Votación guardada! Días: '+seleccionados.join(', ')+'.'
+        : '✓ Se guardó la votación sin días seleccionados.',
+      'ok'
+    );
+  } catch(error) {
+    console.error('Error guardando el voto:',error);
+
+    const codigo=error.code||'sin-codigo';
+    const detalle=error.message||'Error desconocido';
+
+    mostrarMensaje(
+      '❌ No se pudo guardar. Código: '+codigo+'. Detalle: '+detalle,
+      'error'
+    );
+  } finally {
+    guardando=false;
+    boton.disabled=false;
+    boton.textContent='💾 Guardar votación';
+  }
+});
+
+function mostrarMensaje(texto,tipo) {
+  const msg=document.getElementById('voteMessage');
+  msg.textContent=texto;
+  msg.className='vote-message visible';
+  msg.style.color=tipo==='error'?'#b00020':'#087333';
+}
+
+document.getElementById('cancelVoteButton').addEventListener('click',()=>{
+  personaSeleccionada=null;
+  document.getElementById('voteEditor').classList.remove('visible');
+  renderPersonas();
+  document.getElementById('peopleGrid').scrollIntoView({behavior:'smooth',block:'start'});
+});
+
+function renderResultados() {
+  const tabla=document.getElementById('resultsTable');
+  const encabezados=personasUnicas.map(nombre=>
+    `<th class="name-heading">${escaparHTML(nombre)}</th>`
+  ).join('');
+
+  let html=`<thead><tr><th class="name-heading">Día / Hermanos</th>${encabezados}</tr></thead><tbody>`;
+
+  dias.forEach(dia=>{
+    html+=`<tr><th class="day-heading-cell">${dia}</th>`;
+    personasUnicas.forEach(nombre=>{
+      const voto=votosCompartidos[nombre];
+      if (!Array.isArray(voto)) {
+        html+='<td class="waiting" title="Todavía no ha guardado su votación">…</td>';
+      } else if (voto.includes(dia)) {
+        html+='<td class="yes" title="Disponible">✓</td>';
+      } else {
+        html+='<td class="no" title="Día no marcado">—</td>';
+      }
+    });
+    html+='</tr>';
+  });
+
+  html+='</tbody>';
+  tabla.innerHTML=html;
+}
+
+function escaparHTML(texto) {
+  return String(texto).replace(/[&<>"']/g,caracter=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  })[caracter]);
+}
+
+renderPersonas();
+renderResultados();
+</script>
+</body>
+</html>
