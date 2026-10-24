@@ -1,4 +1,4 @@
-﻿
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -13,7 +13,7 @@
   color: #18212b;
   font-size: 16px;
   --neon: #102a91;
-  --card: rgba(244,251,255,.88);
+  --card: rgba(244,251,255,.92);
 }
 * { box-sizing: border-box; }
 body {
@@ -34,7 +34,7 @@ button {
   box-shadow:0 0 8px #1739b45c;
   transition:transform .18s,box-shadow .18s;
 }
-button:hover { transform:translateY(-2px); box-shadow:0 0 14px #183ab58c; }
+button:hover { transform:translateY(-2px); }
 button:disabled { opacity:.65; cursor:wait; transform:none; }
 h1 {
   margin:0; padding:20px 12px; text-align:center; color:#07539a;
@@ -52,7 +52,7 @@ h2 { color:#12345b; }
 .nav-button { min-width:115px; padding:11px 14px; font-size:.92rem; }
 .nav-button.active {
   background:linear-gradient(135deg,#102a91,#267de4);
-  color:white; border-color:#071b67; box-shadow:0 0 16px #1739b480;
+  color:white; border-color:#071b67;
 }
 .page-section { display:none; }
 .page-section.active { display:block; }
@@ -86,14 +86,10 @@ h2 { color:#12345b; }
 .font-label { flex:0 0 auto; color:#12345b; font-size:12px; font-weight:900; }
 .font-label-big { font-size:21px; }
 #fontSlider {
-  display:block; flex:0 0 7cm; width:7cm; min-width:7cm;
-  max-width:none; height:18px; padding:0; margin:0;
-  accent-color:#1739db; cursor:ew-resize; touch-action:pan-y;
+  display:block; width:7cm; min-width:7cm; height:18px;
+  padding:0; margin:0; accent-color:#1739db; cursor:ew-resize;
 }
-#fontValue {
-  flex:0 0 auto; min-width:48px; color:#12345b;
-  font-size:12px; font-weight:900; text-align:center;
-}
+#fontValue { min-width:48px; color:#12345b; font-size:12px; font-weight:900; }
 .schedule { width:100%; border-collapse:collapse; table-layout:fixed; background:#f4fbff; }
 .schedule th,.schedule td {
   border:1px solid #25468c; padding:7px 8px; text-align:center;
@@ -114,7 +110,9 @@ h2 { color:#12345b; }
   text-transform:uppercase; letter-spacing:.05em;
 }
 .day-grid {
-  display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr)); gap:18px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr));
+  gap:18px;
 }
 .day-card {
   min-width:0; overflow:hidden; background:var(--card);
@@ -129,12 +127,10 @@ h2 { color:#12345b; }
 }
 #listenButton { display:block; margin:16px auto 18px; padding:12px 20px; }
 .missing-info { padding:12px; text-align:center; font-weight:bold; }
-
 .vote-panel,.results-panel {
   padding:20px; border:3px solid var(--neon); border-radius:20px;
-  background:linear-gradient(135deg,rgba(245,252,255,.82),rgba(173,222,247,.68),rgba(222,241,252,.82));
+  background:linear-gradient(135deg,rgba(245,252,255,.92),rgba(173,222,247,.78));
   box-shadow:0 0 18px #1739b45c,0 12px 30px #25334220;
-  backdrop-filter:blur(10px);
 }
 .vote-intro { text-align:center; margin:12px 0 22px; }
 .vote-intro p { line-height:1.6; }
@@ -145,10 +141,9 @@ h2 { color:#12345b; }
 }
 .person-button {
   min-height:48px; padding:8px 6px; border-radius:10px;
-  background:linear-gradient(135deg,rgba(255,255,255,.93),rgba(153,220,248,.87));
+  background:linear-gradient(135deg,#fff,#99dcf8);
   border:2px solid #1537a9; color:#12345b;
   font-size:.78rem; line-height:1.2; overflow-wrap:anywhere;
-  box-shadow:0 0 7px #1739b42b;
 }
 .person-button.selected {
   background:linear-gradient(135deg,#102a91,#248bd8);
@@ -158,7 +153,7 @@ h2 { color:#12345b; }
 .vote-editor {
   display:none; margin-top:24px; padding:18px;
   border:2px solid #1739b4; border-radius:16px;
-  background:rgba(255,255,255,.72);
+  background:rgba(255,255,255,.82);
 }
 .vote-editor.visible { display:block; }
 .vote-editor h3 { margin-top:0; }
@@ -177,30 +172,34 @@ h2 { color:#12345b; }
   border-color:#102a91; background:linear-gradient(135deg,#8edaff,#60b9ef);
 }
 .day-option input { width:19px; height:19px; accent-color:#102a91; }
-.vote-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin-top:18px; }
-.save-vote { background:linear-gradient(135deg,#102a91,#267de4); color:white; border-color:#071b67; }
+.vote-actions {
+  display:flex; justify-content:center; flex-wrap:wrap;
+  gap:10px; margin-top:18px;
+}
+.save-vote { background:linear-gradient(135deg,#102a91,#267de4); color:white; }
 .cancel-vote { background:#f3f8ff; }
 .vote-message {
   display:none; margin-top:16px; padding:12px; text-align:center;
   font-weight:bold; color:#12345b; border:1px solid #1a57a8;
-  border-radius:10px; background:rgba(255,255,255,.8);
-  overflow-wrap:anywhere;
+  border-radius:10px; background:rgba(255,255,255,.8); overflow-wrap:anywhere;
 }
 .vote-message.visible { display:block; }
-.vote-note { margin-top:18px; padding:12px; border-radius:10px; background:rgba(255,255,255,.6); font-size:.88rem; line-height:1.5; }
-.connection-status { text-align:center; font-size:.88rem; margin:10px 0; font-weight:bold; overflow-wrap:anywhere; }
+.vote-note {
+  margin-top:18px; padding:12px; border-radius:10px;
+  background:rgba(255,255,255,.6); font-size:.88rem; line-height:1.5;
+}
+.connection-status {
+  text-align:center; font-size:.88rem; margin:10px 0;
+  font-weight:bold; overflow-wrap:anywhere;
+}
 .status-ok { color:#087333; }
 .status-wait { color:#945900; }
 .status-error { color:#b00020; }
-
 .results-scroll {
   width:100%; overflow:auto; border:2px solid var(--neon);
   border-radius:12px; background:rgba(255,255,255,.65);
 }
-.results-table {
-  border-collapse:collapse; table-layout:fixed;
-  width:max-content; min-width:100%;
-}
+.results-table { border-collapse:collapse; table-layout:fixed; width:max-content; min-width:100%; }
 .results-table th,.results-table td {
   border:1px solid #25468c; text-align:center;
   padding:9px 7px; min-width:48px; font-size:.78rem;
@@ -218,13 +217,11 @@ h2 { color:#12345b; }
   background:#b8e9fc; color:#12345b; font-weight:900;
 }
 .results-table thead .name-heading:first-child {
-  position:sticky; left:0; z-index:4;
-  background:#102a91; color:white;
+  position:sticky; left:0; z-index:4; background:#102a91; color:white;
 }
 .results-table td.yes { background:#b7f2cf; color:#075b2b; font-weight:900; }
 .results-table td.no { background:#f5f8fc; color:#9aa5b1; }
 .results-table td.waiting { background:#fff0bd; color:#785900; }
-.results-legend { font-size:.85rem; line-height:1.6; margin-top:12px; }
 
 body.dark {
   background:linear-gradient(135deg,#18232d,#203541,#294958) fixed;
@@ -233,7 +230,6 @@ body.dark {
 .dark h2 { color:#e9f8ff; }
 .dark .today,.dark .day-card,.dark h1 {
   background:#253b49; color:#f3f8ff; border-color:#294fff;
-  box-shadow:0 0 13px #294fff72;
 }
 .dark h1 { background:linear-gradient(135deg,#253b49,#31566b); color:#effaff; }
 .dark .day-heading { background:#25485b; color:#e9f8ff; border-color:#294fff; }
@@ -244,18 +240,15 @@ body.dark {
 .dark .font-label,.dark #fontValue { color:white; }
 .dark .schedule td { color:#10263b; }
 .dark .schedule .time-row td { color:#10294a; }
-.dark .vote-panel,.dark .results-panel {
-  background:linear-gradient(135deg,rgba(30,51,65,.94),rgba(36,75,96,.88));
-  border-color:#5474ff;
-}
+.dark .vote-panel,.dark .results-panel { background:linear-gradient(135deg,#1e3341,#244b60); border-color:#5474ff; }
 .dark .vote-panel h3,.dark .results-panel h3,.dark .vote-intro h2,.dark .vote-intro p { color:#effaff; }
 .dark .person-button { background:linear-gradient(135deg,#294958,#376c87); color:white; border-color:#5474ff; }
 .dark .person-button.selected { background:linear-gradient(135deg,#1738a5,#2769c9); }
-.dark .vote-editor { background:rgba(27,48,61,.94); border-color:#5474ff; }
+.dark .vote-editor { background:#1b303d; border-color:#5474ff; }
 .dark .vote-editor h3,.dark .vote-description { color:#effaff; }
 .dark .day-option { background:linear-gradient(135deg,#294958,#376c87); color:white; border-color:#5474ff; }
 .dark .day-option:has(input:checked) { background:linear-gradient(135deg,#1738a5,#2769c9); }
-.dark .vote-note,.dark .vote-message { color:#effaff; background:rgba(35,60,76,.92); border-color:#5474ff; }
+.dark .vote-note,.dark .vote-message { color:#effaff; background:#233c4c; border-color:#5474ff; }
 .dark .results-scroll { background:#263d4a; }
 .dark .results-table .day-heading-cell { background:#31566b; color:white; }
 .dark .results-table td.no { background:#344b58; color:#d3e1e9; }
@@ -266,8 +259,7 @@ body.dark {
   .container { padding:12px; }
   .toolbar { justify-content:center; }
   .toolbar select { width:100%; max-width:none; }
-  .font-controls { justify-content:flex-start; width:100%; overflow-x:auto; }
-  #fontSlider { width:7cm; min-width:7cm; max-width:none; }
+  .font-controls { width:100%; overflow-x:auto; }
   .day-grid { grid-template-columns:1fr; }
   .schedule th,.schedule td { padding:6px 4px; font-size:.74rem; }
   .today { margin:14px 0 22px; }
@@ -288,13 +280,15 @@ body.dark {
   <div class="toolbar">
     <div class="font-controls" aria-label="Tamaño de letra">
       <span class="font-label">A</span>
-      <input type="range" id="fontSlider" min="8" max="96" step="0.1" value="16" aria-label="Ajustar tamaño de letra">
+      <input type="range" id="fontSlider" min="8" max="96" step="0.1" value="16">
       <span class="font-label font-label-big">A</span>
       <output id="fontValue">100%</output>
     </div>
+
     <label class="voice-control">Voz
       <select id="voiceSelect"><option value="auto">Automática</option></select>
     </label>
+
     <button id="themeButton" type="button">Modo oscuro</button>
   </div>
 
@@ -303,7 +297,7 @@ body.dark {
   <nav class="main-nav" aria-label="Navegación principal">
     <button class="nav-button active" data-page="programPage" type="button">📅 Programa</button>
     <button class="nav-button" data-page="votePage" type="button">🗳️ Votación</button>
-    <button class="nav-button" data-page="resultsPage" type="button">📊 Resultados</button>
+    <button class="nav-button" data-page="resultsPage" type="button">📊 Ver resultados</button>
   </nav>
 
   <section id="programPage" class="page-section active">
@@ -324,7 +318,7 @@ body.dark {
     <div class="vote-panel">
       <h3>¿Quién va a votar?</h3>
       <p style="text-align:center">Pulsa un nombre para abrir su votación.</p>
-      <div id="connectionVote" class="connection-status status-wait">Conectando con la base de datos...</div>
+      <div id="connectionVote" class="connection-status status-wait">Conectando con Firebase...</div>
       <div id="peopleGrid" class="people-grid"></div>
 
       <div id="voteEditor" class="vote-editor">
@@ -340,8 +334,8 @@ body.dark {
 
       <div class="vote-note">
         Los votos se guardan en Firebase para que los resultados puedan actualizarse
-        en otros dispositivos. La votación no verifica por sí sola la identidad de
-        quien elige un nombre.
+        automáticamente en otros dispositivos. Elegir un nombre no verifica por sí solo
+        la identidad de quien vota.
       </div>
     </div>
   </section>
@@ -360,8 +354,8 @@ body.dark {
         </table>
       </div>
       <div class="results-legend">
-        <strong>✓ Disponible</strong> · El hermano o la hermana marcó ese día.<br>
-        <strong>— Sin marcar</strong> · Todavía no ha elegido ese día.<br>
+        <strong>✓ Disponible</strong> · Marcó ese día.<br>
+        <strong>— Sin marcar</strong> · No marcó ese día.<br>
         Desliza la tabla horizontalmente para ver todos los nombres.
       </div>
     </div>
@@ -370,6 +364,9 @@ body.dark {
 </main>
 
 <script>
+'use strict';
+
+/* PROGRAMA SEMANAL */
 const programa = [
   {date:'2026-10-26',day:'Lunes',items:[
     ['10:00 a 12:00','Casa Hna Doris','Doris Salazar','Adriana Gonzalez','light']
@@ -438,24 +435,42 @@ function fechaProgramaIso() {
 }
 
 function nombreDiaDesdeISO(iso) {
-  return new Intl.DateTimeFormat('es-CL',{weekday:'long'}).format(new Date(iso+'T12:00:00'));
+  return new Intl.DateTimeFormat('es-CL',{weekday:'long'})
+    .format(new Date(iso+'T12:00:00'));
+}
+
+function escaparHTML(texto) {
+  return String(texto).replace(/[&<>"']/g,caracter=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  })[caracter]);
 }
 
 function renderRows(items) {
-  let filas='',horaActual='';
+  let filas = '';
+  let horaActual = '';
+
   for (const item of items) {
-    const [hora,lugar,a,b,color]=item;
-    if (color==='header') {
+    const [hora,lugar,a,b,color] = item;
+
+    if (color === 'header') {
       filas += '<tr class="time-row"><td colspan="4">HERMANO/A</td></tr>';
       continue;
     }
-    if (hora) horaActual=hora;
-    filas += `<tr class="${color}">
-      <td>${hora || horaActual}</td><td>${lugar}</td>
-      <td class="${a==='Sin PP'?'no-preaching':''}">${a}</td>
-      <td class="${b==='Sin PP'?'no-preaching':''}">${b}</td>
+
+    if (hora) horaActual = hora;
+
+    filas += `<tr class="${escaparHTML(color)}">
+      <td>${escaparHTML(hora || horaActual)}</td>
+      <td>${escaparHTML(lugar)}</td>
+      <td class="${a==='Sin PP'?'no-preaching':''}">${escaparHTML(a)}</td>
+      <td class="${b==='Sin PP'?'no-preaching':''}">${escaparHTML(b)}</td>
     </tr>`;
   }
+
   return filas;
 }
 
@@ -466,126 +481,179 @@ function makeTable(day) {
 }
 
 function renderPrograma() {
-  const esManana=new Date().getHours()>=18;
-  const fecha=fechaProgramaIso();
-  const d=programa.find(x=>x.date===fecha);
-  document.querySelector('.today-label').textContent=esManana?'PROGRAMA DE MAÑANA':'PROGRAMA DE HOY';
-  document.getElementById('todayContent').innerHTML=d
+  const esManana = new Date().getHours() >= 18;
+  const fecha = fechaProgramaIso();
+  const d = programa.find(x => x.date === fecha);
+
+  document.querySelector('.today-label').textContent =
+    esManana ? 'PROGRAMA DE MAÑANA' : 'PROGRAMA DE HOY';
+
+  document.getElementById('todayContent').innerHTML = d
     ? `<h2>${d.day} · ${fmtDate(d.date)}</h2>${makeTable(d)}`
     : `<h2>${nombreDiaDesdeISO(fecha)} · ${fmtDate(fecha)}</h2>
        <p class="missing-info">No hay información guardada para este día.</p>`;
 
-  document.getElementById('weekGrid').innerHTML=programa.map(day=>
-    `<article class="day-card"><h3>${day.day} · ${fmtDate(day.date)}</h3>${makeTable(day)}</article>`
+  document.getElementById('weekGrid').innerHTML = programa.map(day =>
+    `<article class="day-card">
+      <h3>${day.day} · ${fmtDate(day.date)}</h3>${makeTable(day)}
+    </article>`
   ).join('');
 }
+
 renderPrograma();
 
-/* Navegación */
-const navButtons=document.querySelectorAll('.nav-button');
-const pages=document.querySelectorAll('.page-section');
+/* NAVEGACIÓN Y CÓDIGO PARA RESULTADOS */
+const navButtons = document.querySelectorAll('.nav-button');
+const pages = document.querySelectorAll('.page-section');
+let resultadosAutorizados = false;
 
 function mostrarPagina(id) {
-  pages.forEach(p=>p.classList.toggle('active',p.id===id));
-  navButtons.forEach(b=>b.classList.toggle('active',b.dataset.page===id));
-  if (id==='votePage') renderPersonas();
-  if (id==='resultsPage') renderResultados();
+  if (id === 'resultsPage' && !resultadosAutorizados) {
+    const codigo = prompt('Introduce el código para ver los resultados:');
+
+    if (codigo !== 'PP123') {
+      alert('Código incorrecto. No se mostrarán los resultados.');
+      return;
+    }
+
+    resultadosAutorizados = true;
+  }
+
+  pages.forEach(p => p.classList.toggle('active',p.id === id));
+  navButtons.forEach(b => b.classList.toggle('active',b.dataset.page === id));
+
+  if (id === 'votePage') renderPersonas();
+  if (id === 'resultsPage') renderResultados();
+
   window.scrollTo({top:0,behavior:'smooth'});
 }
-navButtons.forEach(b=>b.addEventListener('click',()=>mostrarPagina(b.dataset.page)));
 
-/* Voces */
+navButtons.forEach(b =>
+  b.addEventListener('click',() => mostrarPagina(b.dataset.page))
+);
+
+/* VOZ */
 async function actualizarSelectorVoces() {
   if (!('speechSynthesis' in window)) return;
-  let voces=speechSynthesis.getVoices();
+
+  let voces = speechSynthesis.getVoices();
+
   if (!voces.length) {
-    await new Promise(resolve=>{
+    await new Promise(resolve => {
       speechSynthesis.addEventListener('voiceschanged',resolve,{once:true});
       setTimeout(resolve,1200);
     });
-    voces=speechSynthesis.getVoices();
+    voces = speechSynthesis.getVoices();
   }
-  const es=voces.filter(v=>v.lang.toLowerCase().startsWith('es'));
-  const selector=document.getElementById('voiceSelect');
-  const guardada=localStorage.getItem('vozPredicacion')||'auto';
-  selector.innerHTML='<option value="auto">Automática</option>'+
-    es.map((v,i)=>`<option value="${i}">${v.name} · ${v.lang}</option>`).join('');
-  selector.value=guardada==='auto'||es[Number(guardada)]?guardada:'auto';
+
+  const vocesES = voces.filter(v => v.lang.toLowerCase().startsWith('es'));
+  const selector = document.getElementById('voiceSelect');
+  const guardada = localStorage.getItem('vozPredicacion') || 'auto';
+
+  selector.innerHTML = '<option value="auto">Automática</option>' +
+    vocesES.map((v,i) =>
+      `<option value="${i}">${escaparHTML(v.name)} · ${escaparHTML(v.lang)}</option>`
+    ).join('');
+
+  selector.value = guardada === 'auto' || vocesES[Number(guardada)]
+    ? guardada : 'auto';
 }
+
 if ('speechSynthesis' in window) {
   actualizarSelectorVoces();
   speechSynthesis.addEventListener('voiceschanged',actualizarSelectorVoces);
 }
-document.getElementById('voiceSelect').addEventListener('change',e=>
+
+document.getElementById('voiceSelect').addEventListener('change',e =>
   localStorage.setItem('vozPredicacion',e.target.value)
 );
 
 function hablar(texto) {
-  if (!('speechSynthesis' in window)) { alert(texto); return; }
+  if (!('speechSynthesis' in window)) {
+    alert(texto);
+    return;
+  }
+
   speechSynthesis.cancel();
-  const es=speechSynthesis.getVoices().filter(v=>v.lang.toLowerCase().startsWith('es'));
-  const valor=document.getElementById('voiceSelect').value;
-  const voz=valor==='auto'?es[0]:es[Number(valor)];
-  const msg=new SpeechSynthesisUtterance(texto);
-  msg.lang=voz?voz.lang:'es-CL';
-  if (voz) msg.voice=voz;
-  msg.rate=.9; msg.pitch=1; msg.volume=1;
+
+  const vocesES = speechSynthesis.getVoices()
+    .filter(v => v.lang.toLowerCase().startsWith('es'));
+  const valor = document.getElementById('voiceSelect').value;
+  const voz = valor === 'auto' ? vocesES[0] : vocesES[Number(valor)];
+
+  const msg = new SpeechSynthesisUtterance(texto);
+  msg.lang = voz ? voz.lang : 'es-CL';
+  if (voz) msg.voice = voz;
+  msg.rate = .9;
+  msg.pitch = 1;
+  msg.volume = 1;
   speechSynthesis.speak(msg);
 }
 
 function leerProgramaDeHoy() {
-  const esManana=new Date().getHours()>=18;
-  const fecha=fechaProgramaIso();
-  const d=programa.find(x=>x.date===fecha);
-  if (!d || !d.items?.length) {
-    hablar(`Atención. No hay información guardada para el programa de predicación de ${esManana?'mañana':'hoy'}.`);
+  const esManana = new Date().getHours() >= 18;
+  const fecha = fechaProgramaIso();
+  const d = programa.find(x => x.date === fecha);
+
+  if (!d || !d.items.length) {
+    hablar(`Atención. No hay información guardada para el programa de ${esManana?'mañana':'hoy'}.`);
     return;
   }
-  const detalle=d.items.filter(i=>i[4]!=='header').map(([hora,lugar,a,b])=>
-    a==='Sin PP'&&b==='Sin PP'
-      ? `${hora?hora+'. ':''}${lugar}. No hay predicación programada en este lugar.`
-      : `${hora?hora+'. ':''}${lugar}. Participan ${a} y ${b}.`
-  ).join(' ');
+
+  const detalle = d.items.filter(i => i[4] !== 'header')
+    .map(([hora,lugar,a,b]) =>
+      a === 'Sin PP' && b === 'Sin PP'
+        ? `${hora ? hora+'. ' : ''}${lugar}. No hay predicación programada en este lugar.`
+        : `${hora ? hora+'. ' : ''}${lugar}. Participan ${a} y ${b}.`
+    ).join(' ');
+
   hablar(`Programa de predicación pública de ${esManana?'mañana':'hoy'}, ${d.day}, ${fmtDate(d.date)}. ${detalle}`);
 }
-const listen=document.createElement('button');
-listen.id='listenButton'; listen.type='button';
-listen.textContent='🔊 Escuchar programa';
+
+const listen = document.createElement('button');
+listen.id = 'listenButton';
+listen.type = 'button';
+listen.textContent = '🔊 Escuchar programa';
 listen.addEventListener('click',leerProgramaDeHoy);
 document.querySelector('.today').appendChild(listen);
 
-/* Tema oscuro */
-document.getElementById('themeButton').addEventListener('click',e=>{
+/* MODO OSCURO */
+document.getElementById('themeButton').addEventListener('click',e => {
   document.body.classList.toggle('dark');
-  const oscuro=document.body.classList.contains('dark');
+  const oscuro = document.body.classList.contains('dark');
   localStorage.setItem('temaPredicacion',oscuro?'oscuro':'claro');
-  e.currentTarget.textContent=oscuro?'Modo claro':'Modo oscuro';
+  e.currentTarget.textContent = oscuro ? 'Modo claro' : 'Modo oscuro';
 });
-if (localStorage.getItem('temaPredicacion')==='oscuro') {
+
+if (localStorage.getItem('temaPredicacion') === 'oscuro') {
   document.body.classList.add('dark');
-  document.getElementById('themeButton').textContent='Modo claro';
+  document.getElementById('themeButton').textContent = 'Modo claro';
 }
 
-/* Tamaño de letra */
-const fontSlider=document.getElementById('fontSlider');
-const fontValue=document.getElementById('fontValue');
+/* TAMAÑO DE LETRA */
+const fontSlider = document.getElementById('fontSlider');
+const fontValue = document.getElementById('fontValue');
+
 function aplicarTamanoLetra() {
-  const n=Number(fontSlider.value);
-  document.documentElement.style.fontSize=n+'px';
-  fontValue.textContent=Math.round(n/16*100)+'%';
+  const n = Number(fontSlider.value);
+  document.documentElement.style.fontSize = n + 'px';
+  fontValue.textContent = Math.round(n/16*100) + '%';
   localStorage.setItem('tamanoLetraPredicacion',fontSlider.value);
 }
-fontSlider.value=Math.min(96,Math.max(8,Number(localStorage.getItem('tamanoLetraPredicacion'))||16));
+
+fontSlider.value = Math.min(96,Math.max(8,
+  Number(localStorage.getItem('tamanoLetraPredicacion')) || 16
+));
 aplicarTamanoLetra();
 fontSlider.addEventListener('input',aplicarTamanoLetra);
 
-/* Firebase: base de datos compartida */
-let db=null;
-let firestore=null;
-let votosCompartidos={};
-let personaSeleccionada=null;
-let firebaseListo=false;
-let guardando=false;
+/* FIREBASE */
+let db = null;
+let firebaseSDK = null;
+let votosCompartidos = {};
+let personaSeleccionada = null;
+let firebaseListo = false;
+let guardando = false;
 
 const firebaseConfig = {
   apiKey: "AIzaSyD_VkbEoLkyJ3mvvQpzlykjcDuI5E8GU",
@@ -598,42 +666,57 @@ const firebaseConfig = {
 };
 
 function estadoConexion(texto,estado) {
-  ['connectionVote','connectionResults'].forEach(id=>{
-    const el=document.getElementById(id);
-    el.textContent=texto;
-    el.className='connection-status '+estado;
+  ['connectionVote','connectionResults'].forEach(id => {
+    const el = document.getElementById(id);
+    el.textContent = texto;
+    el.className = 'connection-status ' + estado;
   });
 }
 
-(async function iniciarFirebase() {
+async function iniciarFirebase() {
   try {
-    const appSDK=await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
-    const dbSDK=await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+    const appSDK = await import(
+      'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js'
+    );
+    const dbSDK = await import(
+      'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js'
+    );
 
-    const app=appSDK.initializeApp(firebaseConfig);
-    db=dbSDK.getFirestore(app);
-    firestore=dbSDK;
+    const app = appSDK.initializeApp(firebaseConfig);
+    db = dbSDK.getFirestore(app);
+    firebaseSDK = dbSDK;
 
     dbSDK.onSnapshot(
       dbSDK.collection(db,'votosPredicacion'),
-      snapshot=>{
-        votosCompartidos={};
-        snapshot.forEach(docSnap=>{
-          const dato=docSnap.data();
-          if (dato && typeof dato.nombre==='string' && Array.isArray(dato.dias)) {
-            votosCompartidos[dato.nombre]=dato.dias.filter(d=>dias.includes(d));
+      snapshot => {
+        votosCompartidos = {};
+
+        snapshot.forEach(docSnap => {
+          const dato = docSnap.data();
+
+          if (dato &&
+              typeof dato.nombre === 'string' &&
+              Array.isArray(dato.dias)) {
+            votosCompartidos[dato.nombre] =
+              dato.dias.filter(dia => dias.includes(dia));
           }
         });
-        firebaseListo=true;
-        estadoConexion('✓ Conectado: los resultados se actualizan automáticamente.','status-ok');
+
+        firebaseListo = true;
+        estadoConexion(
+          '✓ Conectado: los resultados se actualizan automáticamente.',
+          'status-ok'
+        );
+
         renderPersonas();
         renderResultados();
         actualizarEditorDesdeDatosRemotos();
       },
-      error=>{
+      error => {
         console.error('Error leyendo Firebase:',error);
+        firebaseListo = false;
         estadoConexion(
-          'Error al leer Firebase: '+(error.code||error.message||'error desconocido'),
+          'Error al leer Firebase: ' + (error.code || error.message || 'desconocido'),
           'status-error'
         );
       }
@@ -641,202 +724,196 @@ function estadoConexion(texto,estado) {
   } catch(error) {
     console.error('No se pudo iniciar Firebase:',error);
     estadoConexion(
-      'No se pudo iniciar Firebase: '+(error.code||error.message||'error desconocido'),
+      'No se pudo iniciar Firebase: ' + (error.code || error.message || 'desconocido'),
       'status-error'
     );
   }
-})();
+}
 
+iniciarFirebase();
+
+/* PERSONAS Y VOTACIONES */
 function renderPersonas() {
-  const contenedor=document.getElementById('peopleGrid');
-  contenedor.innerHTML='';
-  personasUnicas.forEach(nombre=>{
-    const boton=document.createElement('button');
-    boton.type='button';
-    boton.className='person-button'+(personaSeleccionada===nombre?' selected':'');
-    const titulo=document.createElement('span');
-    titulo.textContent=nombre;
-    const estado=document.createElement('span');
-    estado.className='person-status';
-    estado.textContent=Object.prototype.hasOwnProperty.call(votosCompartidos,nombre)
+  const contenedor = document.getElementById('peopleGrid');
+  contenedor.innerHTML = '';
+
+  personasUnicas.forEach(nombre => {
+    const boton = document.createElement('button');
+    boton.type = 'button';
+    boton.className = 'person-button' +
+      (personaSeleccionada === nombre ? ' selected' : '');
+
+    const titulo = document.createElement('span');
+    titulo.textContent = nombre;
+
+    const estado = document.createElement('span');
+    estado.className = 'person-status';
+    estado.textContent = Object.prototype.hasOwnProperty.call(votosCompartidos,nombre)
       ? '✓ Votación guardada'
       : 'Tocar para votar';
+
     boton.append(titulo,estado);
-    boton.addEventListener('click',()=>abrirVotacion(nombre));
+    boton.addEventListener('click',() => abrirVotacion(nombre));
     contenedor.appendChild(boton);
   });
 }
 
 function abrirVotacion(nombre) {
-  personaSeleccionada=nombre;
-  document.getElementById('selectedPersonTitle').textContent='Votación de '+nombre;
-  const seleccionados=votosCompartidos[nombre]||[];
-  const grid=document.getElementById('daysGrid');
-  grid.innerHTML='';
-  dias.forEach(dia=>{
-    const label=document.createElement('label');
-    label.className='day-option';
-    const check=document.createElement('input');
-    check.type='checkbox';
-    check.value=dia;
-    check.checked=seleccionados.includes(dia);
-    const span=document.createElement('span');
-    span.textContent=dia;
+  personaSeleccionada = nombre;
+  document.getElementById('selectedPersonTitle').textContent = 'Votación de ' + nombre;
+
+  const seleccionados = votosCompartidos[nombre] || [];
+  const grid = document.getElementById('daysGrid');
+  grid.innerHTML = '';
+
+  dias.forEach(dia => {
+    const label = document.createElement('label');
+    label.className = 'day-option';
+
+    const check = document.createElement('input');
+    check.type = 'checkbox';
+    check.value = dia;
+    check.checked = seleccionados.includes(dia);
+
+    const span = document.createElement('span');
+    span.textContent = dia;
+
     label.append(check,span);
     grid.appendChild(label);
   });
+
   document.getElementById('voteEditor').classList.add('visible');
-  const msg=document.getElementById('voteMessage');
+
+  const msg = document.getElementById('voteMessage');
   msg.classList.remove('visible');
-  msg.textContent='';
+  msg.textContent = '';
+
   renderPersonas();
-  document.getElementById('voteEditor').scrollIntoView({behavior:'smooth',block:'start'});
+  document.getElementById('voteEditor')
+    .scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 function actualizarEditorDesdeDatosRemotos() {
   if (!personaSeleccionada || guardando) return;
-  const checks=document.querySelectorAll('#daysGrid input[type="checkbox"]');
-  const diasNuevos=votosCompartidos[personaSeleccionada]||[];
-  checks.forEach(check=>check.checked=diasNuevos.includes(check.value));
+
+  const checks = document.querySelectorAll('#daysGrid input[type="checkbox"]');
+  const diasNuevos = votosCompartidos[personaSeleccionada] || [];
+
+  checks.forEach(check => {
+    check.checked = diasNuevos.includes(check.value);
+  });
 }
 
-document.getElementById('saveVoteButton').addEventListener('click',async()=>{
+function mostrarMensaje(texto,tipo) {
+  const msg = document.getElementById('voteMessage');
+  msg.textContent = texto;
+  msg.className = 'vote-message visible';
+  msg.style.color = tipo === 'error' ? '#b00020' : '#087333';
+}
+
+/* ESTE ES EL ÚNICO CONTROLADOR PARA GUARDAR VOTOS */
+document.getElementById('saveVoteButton').addEventListener('click',async () => {
+  if (guardando) return;
+
   if (!personaSeleccionada) {
     mostrarMensaje('Primero selecciona un nombre.','error');
     return;
   }
 
-  if (!firebaseListo || !db || !firestore) {
+  if (!firebaseListo || !db || !firebaseSDK) {
     mostrarMensaje(
-      'Firebase todavía no está conectado. Revisa el mensaje de conexión que aparece sobre la lista de nombres.',
+      'Firebase no está conectado. Comprueba la conexión y la configuración.',
       'error'
     );
     return;
   }
 
-  const seleccionados=Array.from(
+  const nombre = personaSeleccionada;
+  const seleccionados = Array.from(
     document.querySelectorAll('#daysGrid input[type="checkbox"]:checked')
-  ).map(input=>input.value);
+  ).map(input => input.value);
 
-  const nombre=personaSeleccionada;
-  const boton=document.getElementById('saveVoteButton');
-  boton.disabled=true;
-  boton.textContent='Guardando...';
-  guardando=true;
+  const boton = document.getElementById('saveVoteButton');
+  guardando = true;
+  boton.disabled = true;
+  boton.textContent = 'Guardando...';
 
   try {
-    const ref=firestore.doc(db,'votosPredicacion',nombre);
-    const guardarPromise = firestore.setDoc(ref, {
-  nombre: nombre,
-  dias: seleccionados,
-  actualizadoEn: firestore.serverTimestamp()
-});
+    const referencia = firebaseSDK.doc(db,'votosPredicacion',nombre);
 
-let temporizador;
+    await firebaseSDK.setDoc(referencia,{
+      nombre: nombre,
+      dias: seleccionados,
+      actualizadoEn: firebaseSDK.serverTimestamp()
+    });
 
-try {
-  await Promise.race([
-    guardarPromise,
-    new Promise((_, reject) => {
-      temporizador = setTimeout(() => {
-        const error = new Error(
-          'Firebase tardó demasiado en confirmar el guardado. Comprueba tu conexión.'
-        );
-        error.code = 'timeout';
-        reject(error);
-      }, 15000);
-    })
-  ]);
-
-  votosCompartidos[nombre] = seleccionados;
-  renderPersonas();
-  renderResultados();
-
-  mostrarMensaje(
-    '✓ Votación guardada correctamente.',
-    'ok'
-  );
-
-} finally {
-  clearTimeout(temporizador);
-}
-
-    votosCompartidos[nombre]=seleccionados;
+    votosCompartidos[nombre] = seleccionados;
     renderPersonas();
     renderResultados();
 
     mostrarMensaje(
       seleccionados.length
-        ? '✓ ¡Votación guardada! Días: '+seleccionados.join(', ')+'.'
+        ? '✓ ¡Votación guardada! Días: ' + seleccionados.join(', ') + '.'
         : '✓ Se guardó la votación sin días seleccionados.',
       'ok'
     );
   } catch(error) {
     console.error('Error guardando el voto:',error);
 
-    const codigo=error.code||'sin-codigo';
-    const detalle=error.message||'Error desconocido';
-
     mostrarMensaje(
-      '❌ No se pudo guardar. Código: '+codigo+'. Detalle: '+detalle,
+      'No se pudo guardar: ' +
+      (error.code || error.message || 'error desconocido') +
+      '. Comprueba los permisos de Firestore.',
       'error'
     );
   } finally {
-    guardando=false;
-    boton.disabled=false;
-    boton.textContent='💾 Guardar votación';
+    guardando = false;
+    boton.disabled = false;
+    boton.textContent = '💾 Guardar votación';
   }
 });
 
-function mostrarMensaje(texto,tipo) {
-  const msg=document.getElementById('voteMessage');
-  msg.textContent=texto;
-  msg.className='vote-message visible';
-  msg.style.color=tipo==='error'?'#b00020':'#087333';
-}
-
-document.getElementById('cancelVoteButton').addEventListener('click',()=>{
-  personaSeleccionada=null;
+document.getElementById('cancelVoteButton').addEventListener('click',() => {
+  personaSeleccionada = null;
   document.getElementById('voteEditor').classList.remove('visible');
   renderPersonas();
-  document.getElementById('peopleGrid').scrollIntoView({behavior:'smooth',block:'start'});
+  document.getElementById('peopleGrid')
+    .scrollIntoView({behavior:'smooth',block:'start'});
 });
 
+/* TABLA DE RESULTADOS */
 function renderResultados() {
-  const tabla=document.getElementById('resultsTable');
-  const encabezados=personasUnicas.map(nombre=>
+  const tabla = document.getElementById('resultsTable');
+
+  const encabezados = personasUnicas.map(nombre =>
     `<th class="name-heading">${escaparHTML(nombre)}</th>`
   ).join('');
 
-  let html=`<thead><tr><th class="name-heading">Día / Hermanos</th>${encabezados}</tr></thead><tbody>`;
+  let html = `<thead><tr>
+    <th class="name-heading">Día / Hermanos</th>
+    ${encabezados}
+    </tr></thead><tbody>`;
 
-  dias.forEach(dia=>{
-    html+=`<tr><th class="day-heading-cell">${dia}</th>`;
-    personasUnicas.forEach(nombre=>{
-      const voto=votosCompartidos[nombre];
+  dias.forEach(dia => {
+    html += `<tr><th class="day-heading-cell">${escaparHTML(dia)}</th>`;
+
+    personasUnicas.forEach(nombre => {
+      const voto = votosCompartidos[nombre];
+
       if (!Array.isArray(voto)) {
-        html+='<td class="waiting" title="Todavía no ha guardado su votación">…</td>';
+        html += '<td class="waiting" title="Todavía no ha guardado su votación">…</td>';
       } else if (voto.includes(dia)) {
-        html+='<td class="yes" title="Disponible">✓</td>';
+        html += '<td class="yes" title="Disponible">✓</td>';
       } else {
-        html+='<td class="no" title="Día no marcado">—</td>';
+        html += '<td class="no" title="Día no marcado">—</td>';
       }
     });
-    html+='</tr>';
+
+    html += '</tr>';
   });
 
-  html+='</tbody>';
-  tabla.innerHTML=html;
-}
-
-function escaparHTML(texto) {
-  return String(texto).replace(/[&<>"']/g,caracter=>({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#39;'
-  })[caracter]);
+  html += '</tbody>';
+  tabla.innerHTML = html;
 }
 
 renderPersonas();
